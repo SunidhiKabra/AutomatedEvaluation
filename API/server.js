@@ -4,7 +4,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     Survey = require('./api/models/SurveyModel'),
     User = require('./api/models/UserModel'),
-    // Patient = require('./api/models/PatientModel'),
+    Score = require('./api/models/ScoreModel'),
     jsonwebtoken = require("jsonwebtoken");
     bodyParser = require('body-parser');
 

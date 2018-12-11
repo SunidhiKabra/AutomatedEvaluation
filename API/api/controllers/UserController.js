@@ -47,3 +47,83 @@ var mongoose = require('mongoose'),
     }
   });
 };
+
+
+// get all teams
+exports.get_teams = function(req, res) {
+  mongoose.connection.collection("us").find({role:"EXHIBIT"}).toArray(function(err, result) {
+    console.log(result);
+    if (err) throw err;
+    return res.json(result)
+  });
+};
+
+// get all evaluators
+exports.get_evaluators = function(req, res) {
+  mongoose.connection.collection("us").find({role:"EVALUATOR"}).toArray(function(err, result) {
+    console.log(result);
+    if (err) throw err;
+    return res.json(result)
+  });
+};
+
+// delete a user
+exports.delete_user = function(req, res) {
+  User.findOne({
+  username:req.body.username,
+  role:req.body.role
+}, function(err, user) {
+    if (err)  throw err;
+    if (!user) {
+      return res.json({username:req.params.question, message: 'user does not exist', status:'200'});
+
+  } else if (user) {
+
+    User.remove({
+      username:req.body.username,
+      role:req.body.role
+  }, function(err, task) {
+    if (err)
+      res.send(err);
+    res.json({ message: 'User successfully deleted' });
+  });
+};
+});
+};
+
+
+
+
+// update a user
+exports.update_user = function(req, res) {
+  User.findOne({
+  username: req.body.old,
+  role:req.body.role
+}, function(err, user) {
+    if (err)  throw err;
+    if (!user) {
+      return res.json({username:req.body.old, message: 'user does not exist', status:'200'});
+
+  } else if (user) {
+    User.findOne({
+    username: req.body.new,
+    role:req.body.role
+  }, function(err, user) {
+      if (err)  throw err;
+      if (!user) {
+        User.findOneAndUpdate({username: req.body.old}, {$set: {username:req.body.new }}, {upsert: true}, function(err, task) {
+          if (err)
+            res.send(err);
+          else
+            return res.json({username:req.body.new, message: 'user updated successfully', status:'200'});
+      });
+    } else if (user) {
+      console.log("");
+      res.status(401).json({ message: 'A user with this username for this role already exist', status: '401' });
+    }
+  });
+
+};
+
+});
+};
