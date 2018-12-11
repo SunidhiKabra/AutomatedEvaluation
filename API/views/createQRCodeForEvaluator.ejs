@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>QR Code for Team</title>
+    <% include ./partials/scripts.ejs %>
+    <script>
+      $(document).ready(function(){
+        $("#evaluatorCreationForm").on('submit', function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: $(this).prop('method'),
+            url : $(this).prop('action'),
+            data: $(this).serialize(),
+            success:
+                function(result) {
+                    if(result.status==200){
+                        // window.location.href = '/';
+                        var nric = $('#username').val();
+                        if(!nric){
+                          alert("Name of the evaluator can't be empty!");
+                        }
+                        else{
+                          var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
+                          $('#barcode').attr('src', url);
+                          var x = document.getElementById("barcode");
+                          x.style.display = "block";
+                        }
+                    }
+                },
+               error:
+                function(result) {
+                    alert("Something went wrong");
+                    window.location.href = '/create-qr-code-for-evaluator';
+                   }
+            })
+          });
+        });
+  </script>
+  </head>
+  <body>
+    <% include ./partials/header.ejs %>
+    <div class="container">
+      <div class="teamPage">
+        <form id="evaluatorCreationForm" class="marginTop30" action="/create_user" method="post">
+          <div class="row">
+            <div class="col-sm-4">
+              <label>Evaluator Name:</label>
+              <input id="username" name="username" type="text" placeholder="Name of the Evaluator"/>
+              <br>
+              <input id="role"name="role" value="EVALUATOR" hidden>
+              <button type="submit" class="btn btn-default btn-success marginTop20px" onclick="generateBarCode()">Generate QR Code</button>
+            </div>
+            <div class="col-sm-8">
+              <div class="qrCode">
+                <img id='barcode' alt="QR code" width="250" height="250" style="display: none" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
