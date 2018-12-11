@@ -39,12 +39,12 @@ module.exports.evaluatorRouter = function(app){
   });
 
   app.get('/create-survey', function(req, res, next){
-    if(req.session.admin === undefined){
-        res.redirect('/');
-    }
-    else{
+    // if(req.session.admin === undefined){
+    //     res.redirect('/');
+    // }
+    // else{
       res.render('createSurvey');
-    }
+    // }
   });
 
   // app.post('/submit-form', function(req, res){
