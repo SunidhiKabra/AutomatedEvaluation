@@ -14,13 +14,14 @@
             success:
                 function(result) {
                     if(result.status==200){
+                      // alert(result.token);
                         // window.location.href = '/';
                         var nric = $('#username').val();
                         if(!nric){
                           alert("Name of the evaluator can't be empty!");
                         }
                         else{
-                          var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
+                          var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + result.token + '&amp;size=50x50';
                           $('#barcode').attr('src', url);
                           var x = document.getElementById("barcode");
                           x.style.display = "block";
