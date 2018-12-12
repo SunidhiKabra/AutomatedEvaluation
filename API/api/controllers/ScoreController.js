@@ -43,8 +43,13 @@ var mongoose = require('mongoose'),
                 }
             });
         } else if (user) {
-          console.log("");
-          res.status(401).json({ message: 'this score entry already exists, please use edit score to edit the scores', status: '401' });
+          console.log("already exist - updating");
+          Score.findOneAndUpdate({evaluator: req.body.evaluator,exhibit: req.body.exhibit}, {$set: {scores:req.body.scores}}, {upsert: true}, function(err, task) {
+            if (err)
+              res.send(err);
+            else
+              return res.json({message: 'score entry saved successfully', status:'200'});
+        });
         }
       });
 
