@@ -128,7 +128,8 @@
           <div class="col-sm-6">
               <form id="createQuestionForm" method="post" action="/create_question">
                 <div class="form-group marginTop7">
-                  <label for="question">Question:</label>
+                  <p>Adding new question will result in deletion of the current surevy responses.</p>
+                    <label for="question">Question:</label>
                   <textarea class="form-control" rows="5" id="question" name="question"></textarea>
                   <button type="submit" class="btn btn-default btn-success marginTop20px pull-right">Add Question</button>
                 </div>
@@ -150,7 +151,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Question</h4>
-            <p>Updating or deleting will result in deletion of the survey responses</p>
+            <p>Deleting a question will result in deletion of the survey responses</p>
           </div>
           <div class="modal-body">
             <p id="question1"></p>
