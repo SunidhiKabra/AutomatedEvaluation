@@ -35,12 +35,12 @@
 						},
 						{
 							"key": "username",
-							"value": "admin1",
+							"value": "archit",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "password1",
+							"value": "khuillar",
 							"type": "text"
 						},
 						{
@@ -51,7 +51,7 @@
 						},
 						{
 							"key": "role",
-							"value": "ADMIN",
+							"value": "EVALUATOR",
 							"type": "text"
 						}
 					]
@@ -88,6 +88,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFyY2hpdCIsInBhc3N3b3JkIjoia2h1aWxsYXIiLCJpYXQiOjE1NDQ2MzUwODd9.zPaH1sl93jp1U8eTj06mDFdA5HeTAhmAOTG7Ia_tOkg",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -96,16 +101,18 @@
 						{
 							"key": "username",
 							"value": "admin",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "password",
 							"value": "password",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "role",
-							"value": "ADMIN",
+							"value": "EVALUATOR",
 							"type": "text"
 						}
 					]
@@ -142,7 +149,7 @@
 					"urlencoded": [
 						{
 							"key": "question",
-							"value": "what is your name?",
+							"value": "what is the time right now in usa",
 							"type": "text"
 						}
 					]
@@ -179,12 +186,12 @@
 					"urlencoded": [
 						{
 							"key": "old",
-							"value": "what is your name?",
+							"value": "question 1",
 							"type": "text"
 						},
 						{
 							"key": "new",
-							"value": "dsfsdf",
+							"value": "what is the time",
 							"type": "text"
 						}
 					]
@@ -245,7 +252,7 @@
 					"urlencoded": [
 						{
 							"key": "question",
-							"value": "null",
+							"value": "what is the time",
 							"type": "text"
 						}
 					]
@@ -377,7 +384,7 @@
 					"urlencoded": [
 						{
 							"key": "username",
-							"value": "eval",
+							"value": "eval 1212121",
 							"type": "text"
 						},
 						{
@@ -431,12 +438,12 @@
 						},
 						{
 							"key": "evaluator",
-							"value": "evaluator 5",
+							"value": "eval2 updated",
 							"type": "text"
 						},
 						{
 							"key": "exhibit",
-							"value": "exhibit 5",
+							"value": "team5",
 							"type": "text"
 						},
 						{
@@ -468,6 +475,103 @@
 					]
 				},
 				"description": "this is POST request and saves the scores on the given questions along with:\nexhibit - username of the exhibit\nevaluator - username of the evaluator\nscores - array"
+			},
+			"response": []
+		},
+		{
+			"name": "get all the scores",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/get_all_scores",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"get_all_scores"
+					]
+				},
+				"description": "GET request sends all the data of the Scores database"
+			},
+			"response": []
+		},
+		{
+			"name": "get responses evaluated by a evaluator",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "evaluator",
+							"value": "eval100",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/get_evaluator_response",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"get_evaluator_response"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all the responses submitted for an team",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "exhibit",
+							"value": "team100",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/get_exhibit_response",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"get_exhibit_response"
+					]
+				},
+				"description": "POST request that takes in:\nexhitbit: username of the exhibit\n"
 			},
 			"response": []
 		}

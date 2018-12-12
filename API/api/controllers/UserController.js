@@ -21,7 +21,7 @@ var mongoose = require('mongoose'),
               message: err, status:'400'
             });
           } else {
-            return res.json({name:newUser.name, message: 'user saved successfully', status:'200'});
+            return res.json({ token: jwt.sign({ username: req.body.username, password:req.body.password }, 'secretkey'), name:req.body.username, message: 'user saved successfully', status:'200'});
             }
         });
     } else if (user) {
@@ -33,9 +33,26 @@ var mongoose = require('mongoose'),
 
   // Login to the user - finding if exiats from the database
   exports.user_login = function(req, res) {
+
+    jwt.verify(req.headers.authorization, 'secretkey', function(err, decoded) {
+      if (err) {
+        throw err;
+        res.status(401).json({ message: 'Authentication failed. user not found.', status: '401' });
+      }
+      else{
+        console.log("correct key")
+      }
+});
+    var newUsername = jwt.decode(req.headers.authorization);
+    console.log(newUsername);
+    var string = JSON.stringify(newUsername);
+    var objectValue = JSON.parse(string);
+    var getuser = objectValue['username'];
+    var getpass = objectValue['password'];
+    console.log(getuser)
     User.findOne({
-    username: req.body.username,
-    password: req.body.password,
+    username: getuser,
+    password: getpass,
     role:req.body.role
   }, function(err, user) {
       if (err)  throw err;
@@ -44,7 +61,7 @@ var mongoose = require('mongoose'),
     } else if (user) {
       console.log("done");
       req.session.admin = user.username;
-      return res.json({token: jwt.sign({ username: user.username}, 'secretkey'), message: 'Authentication successful, Admin logged in', status: '200' });
+      return res.json({ username:getuser, message: 'Authentication successful, user logged in', status: '200' });
     }
   });
 };
