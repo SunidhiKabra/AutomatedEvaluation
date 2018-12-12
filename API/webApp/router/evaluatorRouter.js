@@ -48,24 +48,23 @@ module.exports.evaluatorRouter = function(app){
   });
 
   app.get('/view-scoreboard', function(req, res, next){
-    // if(req.session.admin === undefined){
-    //     res.redirect('/');
-    // }
-    // else{
-    //   res.render('viewScoreboard');
-    // }
-    res.render('viewScoreboard');
+    if(req.session.admin === undefined){
+        res.redirect('/');
+    }
+    else{
+      res.render('viewScoreboard');
+    }
+    // res.render('viewScoreboard');
   });
 
 
   app.get('/view-team-scores', function(req, res, next){
-    // if(req.session.admin === undefined){
-    //     res.redirect('/');
-    // }
-    // else{
-    //   res.render('viewScoreboard');
-    // }
-    res.render('viewTeamScores');
+    if(req.session.admin === undefined){
+        res.redirect('/');
+    }
+    else{
+      res.render('viewTeamScores');
+    }
   });
 
 
