@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose'),
   jwt = require('jsonwebtoken'),
+  score = mongoose.model('Score'),
   survey = mongoose.model('Survey');
 
 
@@ -19,7 +20,14 @@ exports.create_question = function(req, res) {
             message: err, status:'400'
           });
         } else {
-          return res.json({name:newQues.questio, message: 'question added successfully', status:'200'});
+          Score.remove({}, function(err, task) {
+            if (err)
+              console.log(err);
+            else
+              console.log("all entries froms score deleted");
+          });
+          return res.json({question:req.body.question, message: 'question added successfully', status:'200'});
+
           }
       });
   } else if (user) {
@@ -82,6 +90,13 @@ exports.delete_question = function(req, res) {
     if (err)
       res.send(err);
     res.json({ message: 'Task successfully deleted' });
+  });
+
+  Score.remove({}, function(err, task) {
+    if (err)
+      console.log(err);
+    else
+      console.log("all entries froms score deleted");
   });
 
 
