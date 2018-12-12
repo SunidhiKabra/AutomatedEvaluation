@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose'),
   jwt = require('jsonwebtoken'),
+  score = mongoose.model('Score'),
   user = mongoose.model('Us');
 
   // create a user - can be anything - ADMIN | EXHIBIT | EVALUATOR
@@ -87,6 +88,30 @@ exports.delete_user = function(req, res) {
       res.send(err);
     res.json({ message: 'User successfully deleted' });
   });
+  if(req.body.role == 'EXHIBIT'){
+    Score.deleteMany({
+      exhibit:req.body.username
+  }, function(err, task) {
+    if (err)
+      console.log(err)
+    else
+      console.log("Exhibit entries deleted from the score table") });
+  } else {
+    Score.deleteMany({
+      evaluator:req.body.username
+  }, function(err, task) {
+    if (err)
+      console.log(err)
+    else
+      console.log("Evaluator entries deleted from the score table")
+
+  });
+
+  }
+
+
+
+
 };
 });
 };
@@ -117,6 +142,22 @@ exports.update_user = function(req, res) {
           else
             return res.json({username:req.body.new, message: 'user updated successfully', status:'200'});
       });
+      if(req.body.role == 'EXHIBIT'){
+            Score.update({exhibit: req.body.old}, {$set: {exhibit:req.body.new }}, {multi: true}, function(err, task) {
+              if (err)
+                console.log(err);
+              else
+                console.log("exhibit updated in the scoreboard");
+          });
+      } else {
+        Score.update({evaluator: req.body.old}, {$set: {evaluator:req.body.new }}, {multi: true}, function(err, task) {
+          if (err)
+            console.log(err);
+          else
+            console.log("evaluator updated in the scoreboard");
+      });
+
+      }
     } else if (user) {
       console.log("");
       res.status(401).json({ message: 'A user with this username for this role already exist', status: '401' });
