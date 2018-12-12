@@ -68,3 +68,33 @@ footer {
 .marginTop7{
   margin-top: 7%;
 }
+
+.newFontStyle {
+  color: #222222;
+  font-family: 'Raleway',sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 72px;
+  margin: 0 0 24px;
+  text-align: center;
+  }
+
+  .newFontStyle1 {
+    color: #222222;
+    font-family: 'Raleway',sans-serif;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 72px;
+    margin: 0 0 24px;
+    text-align: center;
+    }
+
+.columnLine{
+  padding-right:20px;
+  border-left: 1px solid #ccc;
+}
+
+.leftPaddingReduced{
+  padding-left: -10px !important;
+  margin-left: 0 !important
+}

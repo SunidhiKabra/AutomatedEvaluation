@@ -47,6 +47,15 @@ module.exports.evaluatorRouter = function(app){
     }
   });
 
+  app.get('/view-scoreboard', function(req, res, next){
+    // if(req.session.admin === undefined){
+    //     res.redirect('/');
+    // }
+    // else{
+      res.render('viewScoreboard');
+    // }
+  });
+
   // app.post('/submit-form', function(req, res){
   //   // console.log(req.body);
   //   req.session = "admin";

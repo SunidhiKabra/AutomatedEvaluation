@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Welcome</title>
+    <% include ./partials/scripts.ejs %>
+    <!-- <script>
+      $(document).ready(function(){
+          $.ajax({
+              method: "GET",
+              dataType: "json",
+              url: "/get_all_scores",
+              success:
+                function(data) {
+                  var table = $('#scoreboard').DataTable( {
+                    "scrollY" :        "300px",
+                    "scrollX" :        "true",
+                    "scrollCollapse" : "true",
+                    "paging" :         "false",
+                    "bAutoWidth" : false,
+                    "aaData" : data,
+                    dom: 'Bfrtip',
+                      "columnDefs": [ {
+                          "targets": null,
+                          "className": "dt-center",
+                          "data": data,
+                          "defaultContent": "-"
+                      } ],
+                      buttons: [
+                          'print'
+                      ],
+                      "columns" : [  {
+                             data : "evaluator",
+                             "defaultContent": "-"
+                           },
+                           {
+                              data : "exhibit",
+                              "defaultContent": "-"
+                            }
+                           ]
+                  } );
+              },
+            error:
+              function(data) {
+                  alert("Getting all data failed. Please try again");
+                }
+            } );
+        });
+
+  </script> -->
+  </head>
+  <body>
+    <% include ./partials/header.ejs %>
+    <div class="container">
+      <p class="newFontStyle1">Scoreboard</p>
+      <!-- <table id="scoreboard" class="display"  style="width:100%">
+        <thead>
+          <tr class="leftPaddingReduced">
+            <th>Evaluator</th>
+            <th>Team</th>
+          </tr>
+        </thead>
+      </table> -->
+    </div>
+  </body>
+</html>

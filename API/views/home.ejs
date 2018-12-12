@@ -3,8 +3,209 @@
   <head>
     <title>Welcome</title>
     <% include ./partials/scripts.ejs %>
+    <script>
+      $(document).ready(function(){
+          $.ajax({
+              method: "GET",
+              dataType: "json",
+              url: "/get_evaluators",
+              success:
+                function(data) {
+                  var table = $('#evaluatorsTable').DataTable( {
+                    "scrollY" :        "300px",
+                    "scrollX" :        "true",
+                    "scrollCollapse" : "true",
+                    "paging" :         "false",
+                    "bAutoWidth" : false,
+                    "aaData" : data,
+                    dom: 'Bfrtip',
+                      "columnDefs": [ {
+                          "targets": null,
+                          "className": "dt-center",
+                          "data": data,
+                          "defaultContent": "-"
+                      } ],
+                      buttons: [
+                          'print'
+                      ],
+                      "columns" : [  {
+                             data : "username",
+                             "defaultContent": "-"
+                           }
+                           ]
+                  } );
+                  table.$('tr').click(function () {
+                    var data = table.rows(this).data();
+                    // alert("data = "+ data[0].username);
+                    evaluatorUpdate(data[0].username);
+                  });
+              },
+            error:
+              function(data) {
+                  alert("Getting all data failed. Please try again");
+                }
+            } );
+
+            $.ajax({
+                method: "GET",
+                dataType: "json",
+                url: "/get_teams",
+                success:
+                  function(data) {
+                    var table = $('#teamsTable').DataTable( {
+                      "scrollY" :        "300px",
+                      "scrollX" :        "true",
+                      "scrollCollapse" : "true",
+                      "paging" :         "false",
+                      "bAutoWidth" : false,
+                      "aaData" : data,
+                      dom: 'Bfrtip',
+                        "columnDefs": [ {
+                            "targets": null,
+                            "className": "dt-center",
+                            "data": data,
+                            "defaultContent": "-"
+                        } ],
+                        buttons: [
+                            'print'
+                        ],
+                        "columns" : [  {
+                               data : "username",
+                               "defaultContent": "-"
+                             }
+                             ]
+                    } );
+                    table.$('tr').click(function () {
+                      var data = table.rows(this).data();
+                      // alert("data = "+ data[0].username);
+                      teamUpdate(data[0].username);
+                    });
+                },
+              error:
+                function(data) {
+                    alert("Getting all data failed. Please try again");
+                  }
+              } );
+
+              $("#deleteUser").on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                  type: $(this).prop('method'),
+                  url : $(this).prop('action'),
+                  data: $(this).serialize(),
+                  success:
+                      function(result) {
+                          if(result.status==200){
+                              window.location.href = '/home';
+                          }
+                          else{
+                          }
+                      },
+                     error:
+                      function(result) {
+                          alert("Something went wrong. Try again!");
+                          window.location.href = '/home';
+                         }
+                  })
+                });
+
+                $("#updateUser").on('submit', function(e) {
+                  e.preventDefault();
+                  $.ajax({
+                    type: $(this).prop('method'),
+                    url : $(this).prop('action'),
+                    data: $(this).serialize(),
+                    success:
+                        function(result) {
+                            if(result.status==200){
+                                window.location.href = '/home';
+                            }
+                            else{
+                            }
+                        },
+                       error:
+                        function(result) {
+                            alert("Something went wrong. Try again!");
+                            window.location.href = '/home';
+                           }
+                    })
+                  });
+        });
+
+        function evaluatorUpdate(data){
+          document.getElementById("question1").innerHTML = data;
+          document.getElementById('usernameOriginal').value = data;
+          document.getElementById('old').value = data;
+          document.getElementById('role').value = 'EVALUATOR';
+          document.getElementById('role1').value = 'EVALUATOR';
+          $('#myModal').modal('show');
+        }
+
+        function teamUpdate(data){
+          document.getElementById("question1").innerHTML = data;
+          document.getElementById('usernameOriginal').value = data;
+          document.getElementById('old').value = data;
+          document.getElementById('role').value = 'EXHIBIT';
+          document.getElementById('role1').value = 'EXHIBIT';
+          $('#myModal').modal('show');
+        }
+  </script>
   </head>
   <body>
     <% include ./partials/header.ejs %>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <p class="newFontStyle">Evaluators already registered</p>
+          <table id="evaluatorsTable" class="display"  style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Names of Evaluators</th>
+                  </tr>
+              </thead>
+          </table>
+      </div>
+        <div class="col-sm-6 columnLine">
+          <p class="newFontStyle">Teams already registered</p>
+          <table id="teamsTable" class="display"  style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Names of Teams</th>
+                  </tr>
+              </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Update or Delete</h4>
+          </div>
+          <div class="modal-body">
+            <p id="question1"></p>
+            <form id="deleteUser" class="marginTop30" action="/delete_user?" method="post">
+              <input id="usernameOriginal" name="username" hidden>
+              <input id="role" name="role" hidden>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success btn-default btn1">Delete</button>
+              </div>
+            </form>
+            <form id="updateUser" class="marginTop30" action="/update_user" method="post">
+              <input id="old" name="old" hidden>
+              <input id="role1" name="role" hidden>
+              <label>New Team Name</label>
+              <input class="form-control" id="new" name="new"></input>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success btn-default btn1">Update</button>
+                <button type="button" class="btn btn-success btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
