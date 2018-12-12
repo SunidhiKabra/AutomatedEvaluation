@@ -44,4 +44,9 @@ module.exports = function(app) {
   app.route('/get_all_scores')
       .get(ScoreHandlers.get_all_scores);
 
+  app.route('/get_exhibit_response')
+      .post(ScoreHandlers.get_exhibit_response);
+
+      
+
     };
