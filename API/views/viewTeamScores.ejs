@@ -33,84 +33,38 @@
                       }
                     }
                     scoreResponse.push(new ScoreResponse(data[z].scores, data[z].exhibit, data[z].evaluator, average));
-
                 }
-                // alert("scoreResponse = " + JSON.stringify(scoreResponse));
-                class Average{
-                  constructor(averagePercentage, exhibit){
-                    this.averagePercentage = averagePercentage;
-                    this.exhibit = exhibit;
-                  }
-                }
-                var average = [];
-                var average1 = [];
-                var sumOfAverages = [];
-                var count  = [];
-                var percentage = [];
-                var med = [];
-                var flag = 0;
-                for(var i = 0; i < scoreResponse.length; i++){
-                    sumOfAverages[i] = 0;
-                    count[i] = 0;
-                    percentage[i] = 0;
-                    med[i] = 0;
-                  for(var j = 0; j < scoreResponse.length; j++){
-                    if(scoreResponse[i].exhibit == scoreResponse[j].exhibit ){
-                      sumOfAverages[i] = sumOfAverages[i] + scoreResponse[j].average;
-                      count[i]++;
-                    }
-                  }
-
-                  med[i] = (sumOfAverages[i] / count[i]);
-                  // alert(sumOfAverages[i]);
-                  percentage[i] = med[i] * 20.0;
-                  var newAvg = new Average(percentage[i] + '%', scoreResponse[i].exhibit);
-
-
-                  for(var k = 0; k < average1.length; k++){
-                    // alert("inside for loop for k when average1.legth = " + average1.length + " and newAvg.exhibit = " + newAvg.exhibit);
-
-                    if(newAvg.exhibit === average1[k].exhibit){
-                      flag ++;
-                    }
-                  }
-                  if(flag == 0 ){
-                    average1.push(newAvg);
-                  }
-                  // else{
-                  //   // alert(JSON.stringify(newAvg));
-                  // }
-                }
-                // alert(JSON.stringify(average1));
-
-
                 var table = $('#scoreboard').DataTable( {
-                  "order": [[ 0, "desc" ]],
+                  "order": [[ 0, "asc" ]],
                   "scrollY" :        "300px",
                   "scrollX" :        "true",
                   "scrollCollapse" : "true",
                   "paging" :         "false",
                   "bAutoWidth" : false,
-                  "aaData" : average1,
+                  "aaData" : scoreResponse,
                   dom: 'Bfrtip',
                     "columnDefs": [ {
                         "targets": null,
                         "className": "dt-center",
-                        "data": average1,
+                        "data": scoreResponse,
                         "defaultContent": "-"
                     } ],
                     buttons: [
                         'print'
                     ],
                     "columns" : [
-                        {
-                           data : "averagePercentage",
-                           "defaultContent": "-"
-                         },
                          {
                             data : "exhibit",
                             "defaultContent": "-"
-                          }
+                          },
+                         {
+                           data : "evaluator",
+                           "defaultContent": "-"
+                         },
+                          {
+                             data : "scores",
+                             "defaultContent": "-"
+                           }
                          ]
                 } );
             },
@@ -126,20 +80,13 @@
     <% include ./partials/header.ejs %>
     <div class="container">
       <div class="container">
-        <p class="newFontStyle1">Scoreboard</p>
-        <a href="/view-team-scores">
-          <button class="btn btn-default btn-success">
-              View Detailed Score Board
-          </button>
-        </a>
-        <br>
-        <br>
-        <br>
+        <p class="newFontStyle1">Detailed Scoreboard</p>
         <table id="scoreboard" class="display"  style="width:100%">
             <thead>
                 <tr>
-                    <th>Average</th>
-                    <th>Team</th>
+                    <th>Exhibit</th>
+                    <th>Evaluator</th>
+                    <th>Scores</th>
                 </tr>
             </thead>
         </table>
