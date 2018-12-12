@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 
   // create a user - can be anything - ADMIN | EXHIBIT | EVALUATOR
   exports.create_user = function(req, res) {
+
     User.findOne({
     username: req.body.username,
     password: req.body.password,
@@ -33,6 +34,24 @@ var mongoose = require('mongoose'),
 
   // Login to the user - finding if exiats from the database
   exports.user_login = function(req, res) {
+    if(req.body.role == 'ADMIN'){
+      User.findOne({
+      username: req.body.username,
+      password: req.body.password,
+      role:req.body.role
+    }, function(err, user) {
+        if (err)  throw err;
+        if (!user) {
+        res.status(401).json({ message: 'Authentication failed. user not found.', status: '401' });
+      } else if (user) {
+        console.log("done");
+        req.session.admin = user.username;
+        return res.json({ username:getuser, message: 'Authentication successful, user logged in', status: '200' });
+      }
+    });
+
+    }
+    else{
 
     jwt.verify(req.headers.authorization, 'secretkey', function(err, decoded) {
       if (err) {
@@ -64,6 +83,7 @@ var mongoose = require('mongoose'),
       return res.json({ username:getuser, message: 'Authentication successful, user logged in', status: '200' });
     }
   });
+}
 };
 
 
