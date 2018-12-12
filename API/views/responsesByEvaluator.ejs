@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Scoreboard</title>
+    <% include ./partials/scripts.ejs %>
+    <script>
+      $(document).ready(function(){
+          $.ajax({
+              method: 'POST',
+              url: '/get_evaluator_response',
+              contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+              data: { "evaluator": "<%= evaluator%>"} ,
+              success:
+                function(data) {
+                  var table = $('#evaluatorResponse').DataTable( {
+                    "scrollY" :        "300px",
+                    "scrollX" :        "true",
+                    "scrollCollapse" : "true",
+                    "paging" :         "false",
+                    "bAutoWidth" : false,
+                    "aaData" : data,
+                    dom: 'Bfrtip',
+                      "columnDefs": [ {
+                          "targets": null,
+                          "className": "dt-center",
+                          "data": data,
+                          "defaultContent": "-"
+                      } ],
+                      buttons: [
+                          'print'
+                      ],
+                      "columns" : [  {
+                             data : "exhibit",
+                             "defaultContent": "-"
+                           },
+                           {
+                              data : "scores"
+                            }
+                           ]
+                  } );
+                  // table.$('tr').click(function () {
+                  //   var data = table.rows(this).data();
+                  //   // alert("data = "+ data[0].username);
+                  //   evaluatorUpdate(data[0].username);
+                  // });
+              },
+            error:
+              function(data) {
+                  alert("Getting all data failed. Please try again");
+                }
+            } );
+        });
+  </script>
+  </head>
+  <body>
+    <% include ./partials/header.ejs %>
+    <div class="container">
+      <p class="newFontStyle1">Responses submitted by Evaluator- <%= evaluator%></p>
+      <p id="evaluator" value="<%= evaluator%>" hidden>
+          <table id="evaluatorResponse" class="display"  style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Names of Team</th>
+                      <!-- <th>Scores</th>
+                      <th>Scores</th> -->
+                  </tr>
+              </thead>
+          </table>
+    </div>
+  </body>
+</html>

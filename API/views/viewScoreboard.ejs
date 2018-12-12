@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Welcome</title>
+    <title>Scoreboard</title>
     <% include ./partials/scripts.ejs %>
-    <!-- <script>
+    <script>
       $(document).ready(function(){
           $.ajax({
               method: "GET",
               dataType: "json",
-              url: "/get_all_scores",
+              url: "/get_evaluators",
               success:
                 function(data) {
-                  var table = $('#scoreboard').DataTable( {
+                  var table = $('#evaluatorsTable').DataTable( {
                     "scrollY" :        "300px",
                     "scrollX" :        "true",
                     "scrollCollapse" : "true",
@@ -29,37 +29,155 @@
                           'print'
                       ],
                       "columns" : [  {
-                             data : "evaluator",
+                             data : "username",
                              "defaultContent": "-"
-                           },
-                           {
-                              data : "exhibit",
-                              "defaultContent": "-"
-                            }
+                           }
                            ]
                   } );
+                  table.$('tr').click(function () {
+                    var data = table.rows(this).data();
+                    // alert("data = "+ data[0].username);
+                    evaluatorUpdate(data[0].username);
+                  });
               },
             error:
               function(data) {
                   alert("Getting all data failed. Please try again");
                 }
             } );
+
+            $.ajax({
+                method: "GET",
+                dataType: "json",
+                url: "/get_teams",
+                success:
+                  function(data) {
+                    var table = $('#teamsTable').DataTable( {
+                      "scrollY" :        "300px",
+                      "scrollX" :        "true",
+                      "scrollCollapse" : "true",
+                      "paging" :         "false",
+                      "bAutoWidth" : false,
+                      "aaData" : data,
+                      dom: 'Bfrtip',
+                        "columnDefs": [ {
+                            "targets": null,
+                            "className": "dt-center",
+                            "data": data,
+                            "defaultContent": "-"
+                        } ],
+                        buttons: [
+                            'print'
+                        ],
+                        "columns" : [  {
+                               data : "username",
+                               "defaultContent": "-"
+                             }
+                             ]
+                    } );
+                    table.$('tr').click(function () {
+                      var data = table.rows(this).data();
+                      // alert("data = "+ data[0].username);
+                      teamUpdate(data[0].username);
+                    });
+                },
+              error:
+                function(data) {
+                    alert("Getting all data failed. Please try again");
+                  }
+              } );
+
+              $("#deleteUser").on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                  type: $(this).prop('method'),
+                  url : $(this).prop('action'),
+                  data: $(this).serialize(),
+                  success:
+                      function(result) {
+                          if(result.status==200){
+                              window.location.href = '/home';
+                          }
+                          else{
+                          }
+                      },
+                     error:
+                      function(result) {
+                          alert("Something went wrong. Try again!");
+                          window.location.href = '/home';
+                         }
+                  })
+                });
+
+                $("#updateUser").on('submit', function(e) {
+                  e.preventDefault();
+                  $.ajax({
+                    type: $(this).prop('method'),
+                    url : $(this).prop('action'),
+                    data: $(this).serialize(),
+                    success:
+                        function(result) {
+                            if(result.status==200){
+                                window.location.href = '/home';
+                            }
+                            else{
+                            }
+                        },
+                       error:
+                        function(result) {
+                            alert("Something went wrong. Try again!");
+                            window.location.href = '/home';
+                           }
+                    })
+                  });
         });
 
-  </script> -->
+        function evaluatorUpdate(data){
+          // document.getElementById("question1").innerHTML = data;
+          // document.getElementById('usernameOriginal').value = data;
+          // document.getElementById('old').value = data;
+          // document.getElementById('role').value = 'EVALUATOR';
+          // document.getElementById('role1').value = 'EVALUATOR';
+          // $('#myModal').modal('show');
+          window.location.href = '/get-responses-by-evaluator/' + data;
+        }
+
+        function teamUpdate(data){
+          // document.getElementById("question1").innerHTML = data;
+          // document.getElementById('usernameOriginal').value = data;
+          // document.getElementById('old').value = data;
+          // document.getElementById('role').value = 'EXHIBIT';
+          // document.getElementById('role1').value = 'EXHIBIT';
+          // $('#myModal').modal('show');
+        }
+  </script>
   </head>
   <body>
     <% include ./partials/header.ejs %>
     <div class="container">
       <p class="newFontStyle1">Scoreboard</p>
-      <!-- <table id="scoreboard" class="display"  style="width:100%">
-        <thead>
-          <tr class="leftPaddingReduced">
-            <th>Evaluator</th>
-            <th>Team</th>
-          </tr>
-        </thead>
-      </table> -->
+      <div class="row">
+        <div class="col-sm-6">
+          <p class="newFontStyle">Select an Evaluator to view his responses</p>
+          <table id="evaluatorsTable" class="display"  style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Names of Evaluators</th>
+                  </tr>
+              </thead>
+          </table>
+      </div>
+        <div class="col-sm-6 columnLine">
+          <p class="newFontStyle">Select a team to view results for their survey</p>
+          <table id="teamsTable" class="display"  style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Names of Teams</th>
+                  </tr>
+              </thead>
+          </table>
+        </div>
+      </div>
     </div>
   </body>
 </html>

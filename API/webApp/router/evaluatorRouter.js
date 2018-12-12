@@ -48,11 +48,26 @@ module.exports.evaluatorRouter = function(app){
   });
 
   app.get('/view-scoreboard', function(req, res, next){
+    if(req.session.admin === undefined){
+        res.redirect('/');
+    }
+    else{
+      res.render('viewScoreboard');
+    }
+  });
+
+  app.get('/get-responses-by-evaluator/:evaluator', function(req, res, next){
     // if(req.session.admin === undefined){
     //     res.redirect('/');
     // }
     // else{
-      res.render('viewScoreboard');
+    //       console.log("evaluator = " + req.params.evaluator);
+    //       if(req.params.evaluator === undefined){
+    //           res.redirect('/view-scoreboard');
+    //       }
+    //       else{
+              res.render('responsesByEvaluator', {evaluator: req.params.evaluator});
+    //       }
     // }
   });
 
