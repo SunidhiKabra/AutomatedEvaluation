@@ -64,6 +64,7 @@
                   med[i] = (sumOfAverages[i] / count[i]);
                   // alert(sumOfAverages[i]);
                   percentage[i] = med[i] * 20.0;
+                  percentage[i] = percentage[i].toFixed(2);
                   var newAvg = new Average(percentage[i] + '%', scoreResponse[i].exhibit);
 
 
