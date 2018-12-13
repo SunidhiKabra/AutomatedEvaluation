@@ -12,27 +12,30 @@
             success:
               function(data) {
                 class ScoreResponse{
-                  constructor(scores, exhibit, evaluator, average){
+                  constructor(scores, exhibit, evaluator, average, surveyScore){
                     this.scores = scores;
                     this.exhibit = exhibit;
                     this.evaluator = evaluator;
                     this.average = average;
+                    this.surveyScore = surveyScore;
                   }
                 }
                 var scoreResponse = [];
                 for(var z = 0;  z < data.length; z++){
                   var array = data[z].scores;
                   var average = 0;
+                  var surveyScore = 0;
                   var sum = 0;
                     for(var i = 0; i < array.length; i++){
                       if(i < array.length){
                         sum = sum + parseInt(array[i]);
                         if(i == (array.length - 1)){
                           average = sum / array.length;
+
                         }
                       }
                     }
-                    scoreResponse.push(new ScoreResponse(data[z].scores, data[z].exhibit, data[z].evaluator, average));
+                    scoreResponse.push(new ScoreResponse(data[z].scores, data[z].exhibit, data[z].evaluator, average, sum));
                 }
                 var table = $('#scoreboard').DataTable( {
                   "order": [[ 0, "asc" ]],
@@ -64,7 +67,11 @@
                           {
                              data : "scores",
                              "defaultContent": "-"
-                           }
+                           },
+                           {
+                              data : "surveyScore",
+                              "defaultContent": "-"
+                            }
                          ]
                 } );
             },
@@ -87,6 +94,7 @@
                     <th>Exhibit</th>
                     <th>Evaluator</th>
                     <th>Scores</th>
+                    <th>Survey Score</th>
                 </tr>
             </thead>
         </table>
