@@ -52,7 +52,7 @@ var mongoose = require('mongoose'),
 
     }
     else{
-
+      console.log("inside else");
     jwt.verify(req.headers.authorization, 'secretkey', function(err, decoded) {
       if (err) {
         throw err;
