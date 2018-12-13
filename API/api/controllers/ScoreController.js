@@ -26,32 +26,39 @@ var mongoose = require('mongoose'),
           return res.json({username:req.body.exhibit, message: 'this exhibit does not exist', status:'200'});
 
       } else if (user) {
-        Score.findOne({
-        evaluator: req.body.evaluator,
-        exhibit: req.body.exhibit
-      }, function(err, user) {
-          if (err)  throw err;
-          if (!user) {
-            var newScore = new Score(req.body);
-            newScore.save(function(err, user) {
-              if (err) {
-                return res.status(400).send({
-                  message: err, status:'400'
-                });
-              } else {
+
+        Score.findOneAndUpdate({evaluator: req.body.evaluator,exhibit: req.body.exhibit}, {$set: {scores:req.body.scores}}, {upsert: true}, function(err, task) {
+              if (err)
+                res.send(err);
+              else
                 return res.json({message: 'score entry saved successfully', status:'200'});
-                }
-            });
-        } else if (user) {
-          console.log("already exist - updating");
-          Score.findOneAndUpdate({evaluator: req.body.evaluator,exhibit: req.body.exhibit}, {$set: {scores:req.body.scores}}, {upsert: true}, function(err, task) {
-            if (err)
-              res.send(err);
-            else
-              return res.json({message: 'score entry saved successfully', status:'200'});
-        });
-        }
-      });
+          });
+      //   Score.findOne({
+      //   evaluator: req.body.evaluator,
+      //   exhibit: req.body.exhibit
+      // }, function(err, user) {
+      //     if (err)  throw err;
+      //     if (!user) {
+      //       var newScore = new Score(req.body);
+      //       newScore.save(function(err, user) {
+      //         if (err) {
+      //           return res.status(400).send({
+      //             message: err, status:'400'
+      //           });
+      //         } else {
+      //           return res.json({message: 'score entry saved successfully', status:'200'});
+      //           }
+      //       });
+      //   } else if (user) {
+      //     console.log("already exist - updating");
+      //     Score.findOneAndUpdate({evaluator: req.body.evaluator,exhibit: req.body.exhibit}, {$set: {scores:req.body.scores}}, {upsert: true}, function(err, task) {
+      //       if (err)
+      //         res.send(err);
+      //       else
+      //         return res.json({message: 'score entry saved successfully', status:'200'});
+      //   });
+      //   }
+      // });
 
     };
     });
