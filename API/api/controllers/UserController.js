@@ -27,7 +27,7 @@ var mongoose = require('mongoose'),
         });
     } else if (user) {
       console.log("");
-      res.status(401).json({ message: 'this type of user already exists.', status: '401' });
+      return res.json({ token: jwt.sign({ username: req.body.username, password:req.body.password }, 'secretkey'), name:req.body.username, message: 'user already exists', status:'200'});
     }
   });
 };
